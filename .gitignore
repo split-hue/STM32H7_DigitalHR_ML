@@ -1,0 +1,33 @@
+# at build
+Debug/
+Release/
+bin/
+obj/
+
+# bin/gen files
+*.o
+*.elf
+*.list
+*.map
+*.hex
+*.bin
+*.srec
+
+# logs/temp files
+*.bak
+*.jlink
+*.launch
+*.log
+*.history
+
+# CubeIDE/Eclipse settings
+.settings/
+.mxproject
+
+# local tools settings
+*.launch
+.metadata/
+
+# os
+.DS_Store
+Thumbs.db
