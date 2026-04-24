@@ -199,7 +199,7 @@ int post_process(ai_i8* data[])
 void MX_X_CUBE_AI_Init(void)
 {
     /* USER CODE BEGIN 5 */
-  printf("\r\nTEMPLATE - initialization\r\n");
+  printf("\r\nMX_X_CUBE_AI_Init - initialization\r\n");
 
   ai_boostrap(data_activations0);
     /* USER CODE END 5 */

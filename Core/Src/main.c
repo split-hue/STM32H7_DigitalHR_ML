@@ -238,6 +238,8 @@ int main(void)
     __BKPT(1);
   }
 
+  uint8_t test_val = *(volatile uint8_t*)0x90100000;
+
   volatile uint64_t *qspi = (uint32_t *)0x90000000;
 
   uint64_t first_word = *qspi;
