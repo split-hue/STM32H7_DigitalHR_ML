@@ -1,0 +1,12 @@
+../Core/Src/demo.c:171:9:run_inference_internal	5
+../Core/Src/demo.c:57:6:run_batch_analysis_serial	6
+../Core/Src/demo.c:196:6:add_raw_point	2
+../Core/Src/demo.c:204:6:add_stroke_break	1
+../Core/Src/demo.c:208:6:process_strokes_for_ai	13
+../Core/Src/demo.c:265:6:canvas_clear	1
+../Core/Src/demo.c:271:6:canvas_put_pixel	3
+../Core/Src/demo.c:277:6:canvas_draw_line	5
+../Core/Src/demo.c:300:6:ai_init	4
+../Core/Src/demo.c:324:9:run_inference	6
+../Core/Src/demo.c:350:6:draw_ui	1
+../Core/Src/demo.c:371:6:letter_demo	3

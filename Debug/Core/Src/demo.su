@@ -1,0 +1,12 @@
+../Core/Src/demo.c:171:9:run_inference_internal	16	static,ignoring_inline_asm
+../Core/Src/demo.c:57:6:run_batch_analysis_serial	416	static
+../Core/Src/demo.c:196:6:add_raw_point	8	static
+../Core/Src/demo.c:204:6:add_stroke_break	0	static
+../Core/Src/demo.c:208:6:process_strokes_for_ai	96	dynamic
+../Core/Src/demo.c:265:6:canvas_clear	16	static
+../Core/Src/demo.c:271:6:canvas_put_pixel	0	static
+../Core/Src/demo.c:277:6:canvas_draw_line	48	static
+../Core/Src/demo.c:300:6:ai_init	64	static
+../Core/Src/demo.c:324:9:run_inference	16	static,ignoring_inline_asm
+../Core/Src/demo.c:350:6:draw_ui	48	static
+../Core/Src/demo.c:371:6:letter_demo	8	static
