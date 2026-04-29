@@ -51,9 +51,21 @@ Core/Src/demo.o: ../Core/Src/demo.c ../Core/Inc/demo.h \
  ../Drivers/BSP/STM32H750B-DK/../Components/ft5336/ft5336_conf.h \
  ../Core/Inc/stm32_lcd.h ../Core/Inc/../../Fonts/fonts.h \
  ../Drivers/BSP/Components/../Components/Common/lcd.h \
- ../Middlewares/ST/AI/Inc/ai_platform.h ../X-CUBE-AI/App/strokes.h \
- ../X-CUBE-AI/App/strokes_config.h ../X-CUBE-AI/App/strokes_data.h \
- ../X-CUBE-AI/App/strokes_data_params.h ../Core/Inc/main.h
+ ../Core/Inc/app_msg.h ../Middlewares/ST/AI/Inc/ai_platform.h \
+ ../X-CUBE-AI/App/strokes.h ../X-CUBE-AI/App/strokes_config.h \
+ ../X-CUBE-AI/App/strokes_data.h ../X-CUBE-AI/App/strokes_data_params.h \
+ ../Core/Inc/main.h ../Core/Inc/app_msg.h \
+ ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os.h \
+ ../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h \
+ ../Core/Inc/FreeRTOSConfig.h \
+ ../Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h \
+ ../Middlewares/Third_Party/FreeRTOS/Source/include/portable.h \
+ ../Middlewares/Third_Party/FreeRTOS/Source/include/deprecated_definitions.h \
+ ../Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/portmacro.h \
+ ../Middlewares/Third_Party/FreeRTOS/Source/include/mpu_wrappers.h \
+ ../Middlewares/Third_Party/FreeRTOS/Source/include/task.h \
+ ../Middlewares/Third_Party/FreeRTOS/Source/include/list.h \
+ ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h
 ../Core/Inc/demo.h:
 ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal.h:
 ../Core/Inc/stm32h7xx_hal_conf.h:
@@ -108,9 +120,22 @@ Core/Src/demo.o: ../Core/Src/demo.c ../Core/Inc/demo.h \
 ../Core/Inc/stm32_lcd.h:
 ../Core/Inc/../../Fonts/fonts.h:
 ../Drivers/BSP/Components/../Components/Common/lcd.h:
+../Core/Inc/app_msg.h:
 ../Middlewares/ST/AI/Inc/ai_platform.h:
 ../X-CUBE-AI/App/strokes.h:
 ../X-CUBE-AI/App/strokes_config.h:
 ../X-CUBE-AI/App/strokes_data.h:
 ../X-CUBE-AI/App/strokes_data_params.h:
 ../Core/Inc/main.h:
+../Core/Inc/app_msg.h:
+../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os.h:
+../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h:
+../Core/Inc/FreeRTOSConfig.h:
+../Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h:
+../Middlewares/Third_Party/FreeRTOS/Source/include/portable.h:
+../Middlewares/Third_Party/FreeRTOS/Source/include/deprecated_definitions.h:
+../Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/portmacro.h:
+../Middlewares/Third_Party/FreeRTOS/Source/include/mpu_wrappers.h:
+../Middlewares/Third_Party/FreeRTOS/Source/include/task.h:
+../Middlewares/Third_Party/FreeRTOS/Source/include/list.h:
+../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h:

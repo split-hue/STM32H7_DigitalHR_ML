@@ -6,7 +6,10 @@
 #include "main.h"
 #include <stdarg.h>
 #include <math.h>
+#include "app_msg.h"
+#include "cmsis_os.h"
 
+extern osMessageQueueId_t logQueueHandle;
 extern void Error_Handler(void);
 
 #define PEN_RADIUS    4
@@ -41,9 +44,9 @@ static float out_data[AI_STROKES_OUT_1_SIZE] __attribute__((aligned(32)));
 //*****************************************
 #pragma pack(push, 1)
 typedef struct {
-    uint8_t label;      // 1 bajt
-    uint16_t num_points; // 2 bajta
-    float points[320];   // 320*4 bajti (X_test floati)
+    uint8_t label;
+    uint16_t num_points;
+    float points[320];
 } TestSample_t;
 #pragma pack(pop)
 
@@ -59,23 +62,12 @@ void run_batch_analysis_serial(uint32_t start_addr, uint32_t num_samples) {
     uint32_t total_duration = 0;
     uint32_t class_correct[25] = {0};
     uint32_t class_total[25] = {0};
+    uint64_t total_cycles = 0;
 
-        ai_network_report report;
-        if (!ai_strokes_get_report(network, &report)) {
-            printf(">!>Napaka pri branju reporta modela\n");
-        }
-
-
-        printf("\r\nSystem REPORT:\r\n");
-        printf("Ime modela:        %s\r\n", report.model_name);
-        printf("RAM (Work):   %d bytes\r\n", (int)report.activations.size);
-        printf("Flash (Wts):  %d bytes\r\n", (int)report.params.size);
-        printf("MCU Freq:     %lu MHz\r\n", SystemCoreClock / 1000000);
-        printf("------------------------------------------\r\n");
-        printf("ID;Pravilno;Napoved;Samozavest;Cas(ms)\r\n");
-
-    printf("\r\n==========[ zbirka test START ]==========\r\n");
-    printf("ID;Pravilno;Napoved;Samozavest;Cas(ms)\r\n");
+    // glava
+    log_msg_t hdr = { .type = MSG_HDR };
+    osMessageQueuePut(logQueueHandle, &hdr, 0, osWaitForever);
+    osDelay(1);
 
     uint32_t start_bench_time = HAL_GetTick();
 
@@ -87,45 +79,111 @@ void run_batch_analysis_serial(uint32_t start_addr, uint32_t num_samples) {
         memcpy(in_data, &sample_ptr[3], 320 * sizeof(float));
 
         uint32_t t1 = HAL_GetTick();
+        uint32_t start_cycles = DWT->CYCCNT;
         uint8_t predicted_idx = run_inference_internal();
+        uint32_t end_cycles = DWT->CYCCNT;
         uint32_t duration = HAL_GetTick() - t1;
 
+        uint32_t diff = end_cycles - start_cycles;
+        total_cycles   += diff;
         total_duration += duration;
         class_total[real_idx]++;
-
         if (predicted_idx == real_idx) {
             total_correct++;
             class_correct[real_idx]++;
         }
 
-        float conf = out_data[predicted_idx] * 100.0f;
-        printf("%lu;%s;%s;%.2f;%lu\r\n", i, SLO_ABECEDA[real_idx], SLO_ABECEDA[predicted_idx], conf, duration);
-
-        osDelay(5);(5);
+        // pošlji rezultat -> logger
+        log_msg_t m = {
+            .type = MSG_SAMPLE_RESULT,
+            .u.sample = {
+                .type        = MSG_SAMPLE_RESULT,
+                .id          = i,
+                .real_idx    = real_idx,
+                .pred_idx    = predicted_idx,
+                .conf        = out_data[predicted_idx] * 100.0f,
+                .cycles      = diff,
+                .duration_ms = duration
+            }
+        };
+        // čakanje, če je queue poln (back-pressure -> ne izgubimo podatkov)
+        osMessageQueuePut(logQueueHandle, &m, 0, osWaitForever);
+        osDelay(1);
     }
     uint32_t end_bench_time = HAL_GetTick();
 
 
     float final_acc = (float)total_correct / num_samples * 100.0f;
     float avg_time = (float)total_duration / num_samples;
+    float avg_cycles = (float)total_cycles / num_samples;
 
-    printf("\r\n~KONČNO POROČILO~\r\n");
-    printf("Skupno vzorcev:    %lu\r\n", num_samples);
-    printf("Pravilnih napovedi: %lu\r\n", total_correct);
-    printf("Splošna natančnost: %.2f%%\r\n", final_acc);
-    printf("Povprečen čas:      %.2f ms/inf\r\n", avg_time);
-    printf("Skupni čas testa:   %lu ms\r\n", end_bench_time - start_bench_time);
+    log_msg_t fin = {
+        .type = MSG_FINAL,
+        .u.final = {
+            .type     = MSG_FINAL,
+            .total    = num_samples,
+            .correct  = total_correct,
+            .acc      = final_acc,
+            .avg_ms   = avg_time,
+            .avg_us   = avg_cycles / (SystemCoreClock / 1000000.0f),
+            .total_ms = end_bench_time - start_bench_time
+        }
+    };
+    osMessageQueuePut(logQueueHandle, &fin, 0, osWaitForever);
+    osDelay(1);
 
-    printf("\r\nStats črk:\r\n");
-    printf("Črka;Natančnost\r\n");
-    for(int c = 0; c < 25; c++) {
-        if(class_total[c] > 0) {
-            float c_acc = (float)class_correct[c] / class_total[c] * 100.0f;
-            printf("%s;%.1f%%\r\n", SLO_ABECEDA[c], c_acc);
+    for (int c = 0; c < 25; c++) {
+        if (class_total[c] > 0) {
+            log_msg_t cm = {
+                .type = MSG_CLASS_STAT,
+                .u.cls = {
+                    .type      = MSG_CLASS_STAT,
+                    .class_idx = (uint8_t)c,
+                    .acc       = (float)class_correct[c] / class_total[c] * 100.0f
+                }
+            };
+            osMessageQueuePut(logQueueHandle, &cm, 0, osWaitForever);
+            osDelay(1);
         }
     }
-    printf("==========[ zbirka test  KONC ]==========\r\n");
 }
+
+
+void logger_print(const log_msg_t *m)
+{
+    switch (m->type) {
+    case MSG_HDR:
+        printf("\r\n==========[ test START ]==========\r\n");
+        printf("ID;Real;Pred;Conf;Cycles;us\r\n");
+        break;
+    case MSG_SAMPLE_RESULT: {
+        const sample_result_t *s = &m->u.sample;
+        float us = (float)s->cycles / (SystemCoreClock / 1000000.0f);
+        printf("%lu;%s;%s;%.2f;%lu;%.2f\r\n",
+               (unsigned long)s->id,
+               SLO_ABECEDA[s->real_idx],
+               SLO_ABECEDA[s->pred_idx],
+               s->conf, (unsigned long)s->cycles, us);
+        break;
+    }
+    case MSG_FINAL: {
+    	const final_report_t *f = &m->u.final;
+		printf("~ KONČNO POROČILO ~\r\n");
+		printf("Skupno vzorcev:      %lu\r\n", (unsigned long)f->total);
+		printf("Pravilnih napovedi:  %lu\r\n", (unsigned long)f->correct);
+		printf("Splošna natančnost:  %.2f%%\r\n", f->acc);
+		printf("-----------\r\n");
+		printf("Povprečen čas (ms):  %.2f ms\r\n", f->avg_ms);
+		printf("Povprečen čas (us):  %.2f us\r\n", f->avg_us);
+		printf("Skupni čas testa:    %lu ms\r\n", (unsigned long)f->total_ms);
+		break;
+    }
+    case MSG_CLASS_STAT:
+        printf("%s;%.1f%%\r\n", SLO_ABECEDA[m->u.cls.class_idx], m->u.cls.acc);
+        break;
+    }
+}
+//=========================================================================
 
 
 
@@ -368,7 +426,14 @@ void draw_ui(void) {
     UTIL_LCD_DrawRect(CANVAS_X, CANVAS_Y, CANVAS_W, CANVAS_H, UTIL_LCD_COLOR_BLACK);
 }
 
-void letter_demo(void) {
+void letter_demo_run_once(void) {
+	run_batch_analysis_serial(0x90100000, 40);
+	while(1) {
+	        osDelay(1000);
+	    }
+}
+
+void letter_demo_init(void) {
     if (BSP_LCD_Init(0, LCD_ORIENTATION_LANDSCAPE) != BSP_ERROR_NONE) Error_Handler();
     UTIL_LCD_SetFuncDriver(&LCD_Driver);
     BSP_LCD_DisplayOn(0);
@@ -379,11 +444,21 @@ void letter_demo(void) {
     hTS.Height = 272;
     hTS.Orientation = TS_SWAP_XY;
     hTS.Accuracy = 5;
-    if(BSP_TS_Init(0, &hTS) != BSP_ERROR_NONE) while(1);
+    if (BSP_TS_Init(0, &hTS) != BSP_ERROR_NONE) while(1);
+}
 
-    //run_batch_analysis(0x90100000, 40);
-    run_batch_analysis_serial(0x90100000, 40);
-    while(1);
+//void letter_demo(void) {
+//    if (BSP_LCD_Init(0, LCD_ORIENTATION_LANDSCAPE) != BSP_ERROR_NONE) Error_Handler();
+//    UTIL_LCD_SetFuncDriver(&LCD_Driver);
+//    BSP_LCD_DisplayOn(0);
+//
+//    ai_init();
+//
+//    hTS.Width = 480;
+//    hTS.Height = 272;
+//    hTS.Orientation = TS_SWAP_XY;
+//    hTS.Accuracy = 5;
+//    if(BSP_TS_Init(0, &hTS) != BSP_ERROR_NONE) while(1);
 
 //    draw_ui();
 //    canvas_clear();
@@ -470,6 +545,6 @@ void letter_demo(void) {
 //        }
 //        HAL_Delay(10);
 //    }
-}
+//}
 
 

@@ -64,10 +64,12 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
  ../Drivers/BSP/STM32H750B-DK/../Components/ft5336/ft5336_conf.h \
  ../Core/Inc/stm32_lcd.h ../Core/Inc/../../Fonts/fonts.h \
  ../Drivers/BSP/Components/../Components/Common/lcd.h \
+ ../Core/Inc/app_msg.h \
  ../Drivers/BSP/STM32H750B-DK/stm32h750b_discovery.h \
  ../Drivers/BSP/STM32H750B-DK/stm32h750b_discovery_qspi.h \
  ../Drivers/BSP/STM32H750B-DK/../Components/mt25tl01g/mt25tl01g.h \
- ../Drivers/BSP/STM32H750B-DK/../Components/mt25tl01g/mt25tl01g_conf.h
+ ../Drivers/BSP/STM32H750B-DK/../Components/mt25tl01g/mt25tl01g_conf.h \
+ ../Core/Inc/app_msg.h
 ../Core/Inc/main.h:
 ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal.h:
 ../Core/Inc/stm32h7xx_hal_conf.h:
@@ -136,7 +138,9 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
 ../Core/Inc/stm32_lcd.h:
 ../Core/Inc/../../Fonts/fonts.h:
 ../Drivers/BSP/Components/../Components/Common/lcd.h:
+../Core/Inc/app_msg.h:
 ../Drivers/BSP/STM32H750B-DK/stm32h750b_discovery.h:
 ../Drivers/BSP/STM32H750B-DK/stm32h750b_discovery_qspi.h:
 ../Drivers/BSP/STM32H750B-DK/../Components/mt25tl01g/mt25tl01g.h:
 ../Drivers/BSP/STM32H750B-DK/../Components/mt25tl01g/mt25tl01g_conf.h:
+../Core/Inc/app_msg.h:
