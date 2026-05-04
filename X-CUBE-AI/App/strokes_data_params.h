@@ -2,7 +2,7 @@
   ******************************************************************************
   * @file    strokes_data_params.h
   * @author  AST Embedded Analytics Research Platform
-  * @date    Wed Apr 22 07:02:09 2026
+  * @date    Mon May  4 13:31:17 2026
   * @brief   AI Tool Automatic Code Generator for Embedded NN computing
   ******************************************************************************
   * Copyright (c) 2026 STMicroelectronics.
@@ -28,18 +28,18 @@
 
 
 #define AI_STROKES_DATA_ACTIVATIONS_SIZES \
-  { 21760, }
-#define AI_STROKES_DATA_ACTIVATIONS_SIZE     (21760)
+  { 1920, }
+#define AI_STROKES_DATA_ACTIVATIONS_SIZE     (1920)
 #define AI_STROKES_DATA_ACTIVATIONS_COUNT    (1)
-#define AI_STROKES_DATA_ACTIVATION_1_SIZE    (21760)
+#define AI_STROKES_DATA_ACTIVATION_1_SIZE    (1920)
 
 
 
 #define AI_STROKES_DATA_WEIGHTS_SIZES \
-  { 4880, }
-#define AI_STROKES_DATA_WEIGHTS_SIZE         (4880)
+  { 77796, }
+#define AI_STROKES_DATA_WEIGHTS_SIZE         (77796)
 #define AI_STROKES_DATA_WEIGHTS_COUNT        (1)
-#define AI_STROKES_DATA_WEIGHT_1_SIZE        (4880)
+#define AI_STROKES_DATA_WEIGHT_1_SIZE        (77796)
 
 
 

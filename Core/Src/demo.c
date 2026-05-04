@@ -427,7 +427,7 @@ void draw_ui(void) {
 }
 
 void letter_demo_run_once(void) {
-	run_batch_analysis_serial(0x90100000, 40);
+	run_batch_analysis_serial(0x90100000, 225);
 	while(1) {
 	        osDelay(1000);
 	    }
