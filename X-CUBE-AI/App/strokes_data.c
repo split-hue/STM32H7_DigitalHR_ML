@@ -2,7 +2,7 @@
   ******************************************************************************
   * @file    strokes_data.c
   * @author  AST Embedded Analytics Research Platform
-  * @date    Wed Apr 22 07:02:09 2026
+  * @date    Mon May  4 13:31:17 2026
   * @brief   AI Tool Automatic Code Generator for Embedded NN computing
   ******************************************************************************
   * @attention
@@ -21,13 +21,13 @@
 AI_API_DECLARE_BEGIN
 ai_buffer g_strokes_data_map_activations[AI_STROKES_DATA_ACTIVATIONS_COUNT] = {
   AI_BUFFER_INIT(AI_FLAG_NONE,  AI_BUFFER_FORMAT_U8,
-    AI_BUFFER_SHAPE_INIT(AI_SHAPE_BCWH, 4, 1, 21760, 1, 1),
-    21760, NULL, NULL),    /* heap_overlay_pool */
+    AI_BUFFER_SHAPE_INIT(AI_SHAPE_BCWH, 4, 1, 1920, 1, 1),
+    1920, NULL, NULL),    /* heap_overlay_pool */
   };
 ai_buffer g_strokes_data_map_weights[AI_STROKES_DATA_WEIGHTS_COUNT] = {
   AI_BUFFER_INIT(AI_FLAG_NONE,  AI_BUFFER_FORMAT_U8,
-    AI_BUFFER_SHAPE_INIT(AI_SHAPE_BCWH, 4, 1, 4880, 1, 1),
-    4880, NULL, s_strokes_weights_array_u64),   /* weights_array */
+    AI_BUFFER_SHAPE_INIT(AI_SHAPE_BCWH, 4, 1, 77796, 1, 1),
+    77796, NULL, s_strokes_weights_array_u64),   /* weights_array */
   };
 
 

@@ -1,0 +1,8 @@
+../Core/Src/main.c:863:6:StartInferenceTask	1
+../Core/Src/main.c:884:6:StartUiTask	2
+../Core/Src/main.c:131:6:SDRAM_Init	1
+../Core/Src/main.c:329:6:SystemClock_Config	5
+../Core/Src/main.c:392:6:PeriphCommonClock_Config	2
+../Core/Src/main.c:169:5:main	27
+../Core/Src/main.c:958:6:HAL_TIM_PeriodElapsedCallback	2
+../Core/Src/main.c:975:6:Error_Handler	1

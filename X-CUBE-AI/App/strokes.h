@@ -2,7 +2,7 @@
   ******************************************************************************
   * @file    strokes.h
   * @author  AST Embedded Analytics Research Platform
-  * @date    Wed Apr 22 07:02:09 2026
+  * @date    Mon May  4 13:31:17 2026
   * @brief   AI Tool Automatic Code Generator for Embedded NN computing
   ******************************************************************************
   * @attention
@@ -23,7 +23,7 @@
 
 /******************************************************************************/
 #define AI_STROKES_MODEL_NAME          "strokes"
-#define AI_STROKES_ORIGIN_MODEL_NAME   "strokes_opt"
+#define AI_STROKES_ORIGIN_MODEL_NAME   "strokes"
 
 /******************************************************************************/
 #define AI_STROKES_ACTIVATIONS_ALIGNMENT   (4)
@@ -62,12 +62,12 @@ AI_DEPRECATED
   AI_STROKES_OUT_1_SIZE_BYTES, \
 }
 #define AI_STROKES_OUT_1_FORMAT      (AI_BUFFER_FORMAT_FLOAT)
-#define AI_STROKES_OUT_1_CHANNEL     (4)
-#define AI_STROKES_OUT_1_SIZE        (4)
-#define AI_STROKES_OUT_1_SIZE_BYTES  (16)
+#define AI_STROKES_OUT_1_CHANNEL     (25)
+#define AI_STROKES_OUT_1_SIZE        (25)
+#define AI_STROKES_OUT_1_SIZE_BYTES  (100)
 
 /******************************************************************************/
-#define AI_STROKES_N_NODES (10)
+#define AI_STROKES_N_NODES (11)
 
 
 AI_API_DECLARE_BEGIN

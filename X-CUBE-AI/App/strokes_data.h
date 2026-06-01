@@ -2,7 +2,7 @@
   ******************************************************************************
   * @file    strokes_data.h
   * @author  AST Embedded Analytics Research Platform
-  * @date    Wed Apr 22 07:02:09 2026
+  * @date    Mon May  4 13:31:17 2026
   * @brief   AI Tool Automatic Code Generator for Embedded NN computing
   ******************************************************************************
   * Copyright (c) 2026 STMicroelectronics.
@@ -32,7 +32,7 @@ AI_DEPRECATED
 AI_API_DECLARE_BEGIN
 
 
-extern const ai_u64 s_strokes_weights_array_u64[610];
+extern const ai_u64 s_strokes_weights_array_u64[9725];
 
 
 

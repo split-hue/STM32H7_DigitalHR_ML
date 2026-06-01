@@ -13,29 +13,24 @@
 #include <sys/time.h>
 #include <sys/times.h>
 
-/* Tukaj vključi svoj glavni header, da bo syscalls.c poznal huart ročaje */
+
 #include "main.h"
 
-/* Če uporabljaš printf preko UART-a, odkomentiraj spodnjo vrstico in vpiši pravi huart */
-// extern UART_HandleTypeDef huart3;
+extern UART_HandleTypeDef huart3;
 
 int __io_putchar(int ch) {
-    /* Če želiš printf, tukaj pošlji znak čez UART:
-       HAL_UART_Transmit(&huart3, (uint8_t *)&ch, 1, 0xFFFF); */
     return ch;
 }
 
 int _read(int file, char *ptr, int len) {
     return 0;
 }
-
+//prek puttyja <<<<<<
 int _write(int file, char *ptr, int len) {
-    int DataIdx;
-    for (DataIdx = 0; DataIdx < len; DataIdx++) {
-        __io_putchar(*ptr++);
-    }
+    HAL_UART_Transmit(&huart3, (uint8_t*)ptr, len, HAL_MAX_DELAY);
     return len;
 }
+
 
 int _close(int file) {
     return -1;

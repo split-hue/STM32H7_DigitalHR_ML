@@ -26,7 +26,7 @@
 #include "demo.h"
 #include "stm32h750b_discovery.h"
 #include "stm32h750b_discovery_qspi.h"
-
+#include "app_msg.h"
 
 /* USER CODE END Includes */
 
@@ -69,19 +69,21 @@ SDRAM_HandleTypeDef hsdram2;
 osThreadId_t inferenceTaskHandle;
 const osThreadAttr_t inferenceTask_attributes = {
   .name = "inferenceTask",
-  .stack_size = 3840 * 4,
+  .stack_size = 4096 * 4,
   .priority = (osPriority_t) osPriorityNormal,
 };
 /* Definitions for uiTask */
 osThreadId_t uiTaskHandle;
 const osThreadAttr_t uiTask_attributes = {
   .name = "uiTask",
-  .stack_size = 2048 * 4,
-  .priority = (osPriority_t) osPriorityLow,
+  .stack_size = 1024 * 4,
+  .priority = (osPriority_t) osPriorityBelowNormal,
 };
 /* USER CODE BEGIN PV */
 extern QSPI_HandleTypeDef hqspi;
 
+osMessageQueueId_t logQueueHandle;
+const osMessageQueueAttr_t logQueue_attributes = { .name = "logQueue" };
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -107,18 +109,18 @@ void StartUiTask(void *argument);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 
-void HardFault_HandlerC(uint32_t *stack)
-{
-    volatile uint32_t r0  = stack[0];
-    volatile uint32_t r1  = stack[1];
-    volatile uint32_t r2  = stack[2];
-    volatile uint32_t r3  = stack[3];
-    volatile uint32_t r12 = stack[4];
-    volatile uint32_t lr  = stack[5];
-    volatile uint32_t pc  = stack[6];
-    volatile uint32_t psr = stack[7];
-    __BKPT(0);
-}
+//void HardFault_HandlerC(uint32_t *stack)
+//{
+//    volatile uint32_t r0  = stack[0];
+//    volatile uint32_t r1  = stack[1];
+//    volatile uint32_t r2  = stack[2];
+//    volatile uint32_t r3  = stack[3];
+//    volatile uint32_t r12 = stack[4];
+//    volatile uint32_t lr  = stack[5];
+//    volatile uint32_t pc  = stack[6];
+//    volatile uint32_t psr = stack[7];
+//    __BKPT(0);
+//}
 
 
 #define SDRAM_MODEREG_BURST_LENGTH_1         0x0000
@@ -238,17 +240,19 @@ int main(void)
     __BKPT(1);
   }
 
-  volatile uint64_t *qspi = (uint32_t *)0x90000000;
-
-  uint64_t first_word = *qspi;
-  volatile uint64_t b0 = qspi[0];
-  volatile uint64_t b1 = qspi[1];
-  volatile uint64_t b2 = qspi[2];
-  volatile uint64_t b3 = qspi[3];
-  volatile uint64_t b4 = qspi[4];
-  volatile uint64_t b5 = qspi[5];
-  volatile uint64_t b6 = qspi[6];
-  volatile uint64_t b7 = qspi[7];
+//  uint8_t test_val = *(volatile uint8_t*)0x90100000;
+//
+//  volatile uint64_t *qspi = (uint32_t *)0x90000000;
+//
+//  uint64_t first_word = *qspi;
+//  volatile uint64_t b0 = qspi[0];
+//  volatile uint64_t b1 = qspi[1];
+//  volatile uint64_t b2 = qspi[2];
+//  volatile uint64_t b3 = qspi[3];
+//  volatile uint64_t b4 = qspi[4];
+//  volatile uint64_t b5 = qspi[5];
+//  volatile uint64_t b6 = qspi[6];
+//  volatile uint64_t b7 = qspi[7];
 
 
 
@@ -259,7 +263,10 @@ int main(void)
   MX_X_CUBE_AI_Init();
 
 
-
+  CoreDebug->DEMCR |= CoreDebug_DEMCR_TRCENA_Msk;
+  DWT->LAR = 0xC5ACCE55;
+  DWT->CYCCNT = 0;
+  DWT->CTRL |= DWT_CTRL_CYCCNTENA_Msk;
 
 
   /* USER CODE END 2 */
@@ -281,6 +288,7 @@ int main(void)
 
   /* USER CODE BEGIN RTOS_QUEUES */
   /* add queues, ... */
+  logQueueHandle = osMessageQueueNew(64, sizeof(log_msg_t), &logQueue_attributes);
   /* USER CODE END RTOS_QUEUES */
 
   /* Create the thread(s) */
@@ -855,12 +863,13 @@ static void MX_GPIO_Init(void)
 void StartInferenceTask(void *argument)
 {
   /* USER CODE BEGIN 5 */
-
+	letter_demo_init();
   /* Infinite loop */
   for(;;)
   {
-	  letter_demo();
-	  osDelay(1);
+	  //letter_demo();
+	  letter_demo_run_once();
+	  osDelay(5000);
   }
   /* USER CODE END 5 */
 }
@@ -876,12 +885,13 @@ void StartUiTask(void *argument)
 {
   /* USER CODE BEGIN StartUiTask */
 
-
+	log_msg_t msg;
   /* Infinite loop */
   for(;;)
   {
-
-    osDelay(1);
+      if (osMessageQueueGet(logQueueHandle, &msg, NULL, osWaitForever) == osOK) {
+          logger_print(&msg);   // implementirano v demo.c ali ločenem logger.c
+      }
   }
   /* USER CODE END StartUiTask */
 }

@@ -7,6 +7,7 @@
 #include "stm32h750b_discovery_lcd.h"
 #include "stm32h750b_discovery_ts.h"
 #include "stm32_lcd.h"
+#include "app_msg.h"
 
 #define CANVAS_X      190
 #define CANVAS_Y      40
@@ -41,6 +42,8 @@ void uart_print_results(uint8_t res);
 void canvas_to_28x28(float *out);
 void itm_print(const char *s);
 void itm_printf(const char *fmt, ...);
+
+void logger_print(const log_msg_t *m);
 
 #ifdef __cplusplus
 }

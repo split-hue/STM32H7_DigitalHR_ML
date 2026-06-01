@@ -1,0 +1,10 @@
+../Core/Src/demo.c:44:6:add_raw_point	8	static
+../Core/Src/demo.c:52:6:add_stroke_break	0	static
+../Core/Src/demo.c:56:6:process_strokes_for_ai	96	dynamic
+../Core/Src/demo.c:116:6:canvas_clear	16	static
+../Core/Src/demo.c:122:6:canvas_put_pixel	0	static
+../Core/Src/demo.c:128:6:canvas_draw_line	48	static
+../Core/Src/demo.c:151:6:ai_init	64	static
+../Core/Src/demo.c:176:9:run_inference	16	static,ignoring_inline_asm
+../Core/Src/demo.c:202:6:draw_ui	48	static
+../Core/Src/demo.c:223:6:letter_demo	152	static

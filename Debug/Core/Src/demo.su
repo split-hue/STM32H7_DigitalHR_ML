@@ -1,0 +1,14 @@
+../Core/Src/demo.c:152:6:logger_print	32	static
+../Core/Src/demo.c:229:9:run_inference_internal	16	static,ignoring_inline_asm
+../Core/Src/demo.c:60:6:run_batch_analysis_serial	368	static
+../Core/Src/demo.c:254:6:add_raw_point	8	static
+../Core/Src/demo.c:262:6:add_stroke_break	0	static
+../Core/Src/demo.c:266:6:process_strokes_for_ai	96	dynamic
+../Core/Src/demo.c:323:6:canvas_clear	16	static
+../Core/Src/demo.c:329:6:canvas_put_pixel	0	static
+../Core/Src/demo.c:335:6:canvas_draw_line	48	static
+../Core/Src/demo.c:358:6:ai_init	64	static
+../Core/Src/demo.c:382:9:run_inference	16	static,ignoring_inline_asm
+../Core/Src/demo.c:408:6:draw_ui	48	static
+../Core/Src/demo.c:429:6:letter_demo_run_once	8	static
+../Core/Src/demo.c:436:6:letter_demo_init	8	static
