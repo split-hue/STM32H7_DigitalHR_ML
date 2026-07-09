@@ -6,4 +6,4 @@ Za zbiranje učnih podatkov je bila razvita namenska aplikacija, ki beleži tako
 Rezultati kažejo, da modeli, ki temeljijo na podatkih o potezah, dosegajo višjo natančnost v primerjavi z modeli, ki za vhod uporabljajo slike črk.
 
 
-> ***Povezavo in ostalo gradivo (jupyter notebooks, vzorec naborov, naučeni modeli, namenska aplikacija) bodo objavljena naknadno, ko bo delo končano in odobreno s strani mentorja.***
+> ***Ostalo gradivo je shranjeno v mapah z imenom: JUPY (Jupyter notebooks za učenje modelov), MODEL (vsi končni izvoženi modeli), DATASET (primeri podatkov v podatkovnih zbirkah), REZ_MODEL (rezultati posameznih modelov)***
